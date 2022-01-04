@@ -55,6 +55,18 @@ func GetEntities() []Entity {
 	return entities
 }
 
+func (e *Entity) EnableGlowEsp() {
+	var glowManager, entityGlow uint32
+
+	_ = ReadProcessMemory(handle, uint32(clientDllModuleAddress+dwGlowObjectManager), &glowManager)
+	_ = ReadProcessMemory(handle, e.Pointer+m_iGlowIndex, &entityGlow)
+
+	_ = WriteProcessMemory(handle, glowManager+(entityGlow*0x38)+0x8, rgbToColor(255, 255, 255))
+	_ = WriteProcessMemory(handle, glowManager+(entityGlow*0x38)+0x14, float32(0.5))
+	_ = WriteProcessMemory(handle, glowManager+(entityGlow*0x38)+0x27, true)
+	_ = WriteProcessMemory(handle, glowManager+(entityGlow*0x38)+0x28, true)
+}
+
 func GetLocalPlayer() Entity {
 	var localPlayerPtr uint32
 	_ = ReadProcessMemory(handle, uint32(clientDllModuleAddress+dwLocalPlayer), &localPlayerPtr)
