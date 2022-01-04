@@ -38,3 +38,15 @@ func Init() error {
 
 	return nil
 }
+
+func GetEntity(entityPtr uint32) Entity {
+	var health uint32
+	var team uint32
+	var position EntityPosition
+
+	_ = ReadProcessMemory(handle, entityPtr+m_iHealth, &health)
+	_ = ReadProcessMemory(handle, entityPtr+m_iTeamNum, &team)
+	_ = ReadProcessMemory(handle, entityPtr+m_vecOrigin, &position)
+
+	return Entity{health, team, position, entityPtr}
+}
