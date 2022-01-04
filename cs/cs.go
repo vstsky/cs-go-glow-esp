@@ -39,6 +39,13 @@ func Init() error {
 	return nil
 }
 
+func GetLocalPlayer() Entity {
+	var localPlayerPtr uint32
+	_ = ReadProcessMemory(handle, uint32(clientDllModuleAddress+dwLocalPlayer), &localPlayerPtr)
+
+	return GetEntity(localPlayerPtr)
+}
+
 func GetEntity(entityPtr uint32) Entity {
 	var health uint32
 	var team uint32
