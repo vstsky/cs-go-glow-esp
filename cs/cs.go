@@ -18,3 +18,23 @@ type Color struct {
 	g float32
 	b float32
 }
+
+func Init() error {
+	pid, _ := findProcessPid(processName)
+
+	var err error
+
+	handle, err = OpenProcess(PROCESS_ALL_ACCESS, false, pid)
+
+	if err != nil {
+		return err
+	}
+
+	clientDllModuleAddress, err = getModuleBaseAddress(pid, moduleName)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
