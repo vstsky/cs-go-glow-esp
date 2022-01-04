@@ -39,6 +39,22 @@ func Init() error {
 	return nil
 }
 
+func GetEntities() []Entity {
+	var entities []Entity
+	for i := 0; i < 64; i++ {
+		var entityPtr uint32
+		_ = ReadProcessMemory(handle, uint32(int(clientDllModuleAddress+dwEntityList)+i*0x10), &entityPtr)
+
+		if entityPtr == 0 {
+			continue
+		}
+
+		entities = append(entities, GetEntity(entityPtr))
+	}
+
+	return entities
+}
+
 func GetLocalPlayer() Entity {
 	var localPlayerPtr uint32
 	_ = ReadProcessMemory(handle, uint32(clientDllModuleAddress+dwLocalPlayer), &localPlayerPtr)
