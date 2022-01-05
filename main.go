@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-var appTitle = "CSGO"
-
 func main() {
 	err := cs.Init()
 
